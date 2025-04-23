@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PurpleFinance: Gestão Inteligente de Dinheiro Pessoal</title>
+    <meta name="description" content="Plataforma moderna de planejamento financeiro com painéis interativos, orçamentos personalizados e acompanhamento de metas em um design roxo elegante">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+</head>
+<body class="bg-purple-50 min-h-screen">
+    <div id="app" class="min-h-screen">
+        <nav class="bg-purple-600 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">PurpleFinance</h1>
+                    <div class="space-x-4">
+                        <button @click="activeView = 'dashboard'" :class="{'text-purple-200': activeView === 'dashboard'}" class="hover:text-purple-200">Painel</button>
+                        <button @click="activeView = 'transactions'" :class="{'text-purple-200': activeView === 'transactions'}" class="hover:text-purple-200">Transações</button>
+                        <button @click="activeView = 'goals'" :class="{'text-purple-200': activeView === 'goals'}" class="hover:text-purple-200">Metas</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 py-8">
+            <!-- Visão do Painel -->
+            <div v-if="activeView === 'dashboard'" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-purple-800">Saldo Atual</h3>
+                        <p class="text-3xl font-bold text-purple-600">{{ formatCurrency(balance) }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-purple-800">Renda Mensal</h3>
+                        <p class="text-3xl font-bold text-green-600">{{ formatCurrency(monthlyIncome) }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-purple-800">Despesas Mensais</h3>
+                        <p class="text-3xl font-bold text-red-600">{{ formatCurrency(monthlyExpenses) }}</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-purple-800 mb-4">Despesas por Categoria</h3>
+                        <canvas ref="pieChart"></canvas>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-purple-800 mb-4">Tendência Mensal</h3>
+                        <canvas ref="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visão de Transações -->
+            <div v-if="activeView === 'transactions'" class="space-y-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-4">Adicionar Transação</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input v-model="newTransaction.description" type="text" placeholder="Descrição" class="p-2 border rounded">
+                        <input v-model="newTransaction.amount" type="number" placeholder="Valor" class="p-2 border rounded">
+                        <select v-model="newTransaction.category" class="p-2 border rounded">
+                            <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+                        </select>
+                        <select v-model="newTransaction.type" class="p-2 border rounded">
+                            <option value="income">Renda</option>
+                            <option value="expense">Despesa</option>
+                        </select>
+                        <button @click="addTransaction" class="bg-purple-600 text-white p-2 rounded hover:bg-purple-700">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-4">Transações Recentes</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-purple-100">
+                                    <th class="p-2 text-left">Data</th>
+                                    <th class="p-2 text-left">Descrição</th>
+                                    <th class="p-2 text-left">Categoria</th>
+                                    <th class="p-2 text-left">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="transaction in transactions" :key="transaction.id" class="border-b">
+                                    <td class="p-2">{{ formatDate(transaction.date) }}</td>
+                                    <td class="p-2">{{ transaction.description }}</td>
+                                    <td class="p-2">{{ transaction.category }}</td>
+                                    <td class="p-2" :class="transaction.type === 'income' ? 'text-green-600' : 'text-red-600'">
+                                        {{ formatCurrency(transaction.amount) }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visão de Metas -->
+            <div v-if="activeView === 'goals'" class="space-y-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-4">Metas Financeiras</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <input v-model="newGoal.description" type="text" placeholder="Descrição da Meta" class="p-2 border rounded">
+                        <input v-model="newGoal.target" type="number" placeholder="Valor Alvo" class="p-2 border rounded">
+                        <input v-model="newGoal.current" type="number" placeholder="Valor Atual" class="p-2 border rounded">
+                        <button @click="addGoal" class="bg-purple-600 text-white p-2 rounded hover:bg-purple-700">Adicionar Meta</button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div v-for="goal in goals" :key="goal.id" class="border rounded p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold text-purple-800">{{ goal.description }}</h3>
+                                <span>{{ formatCurrency(goal.current) }} / {{ formatCurrency(goal.target) }}</span>
+                            </div>
+                            <div class="w-full bg-purple-100 rounded-full h-2.5">
+                                <div class="bg-purple-600 h-2.5 rounded-full" :style="{ width: (goal.current / goal.target * 100) + '%' }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const activeView = ref('dashboard');
+                const balance = ref(5000);
+                const monthlyIncome = ref(4000);
+                const monthlyExpenses = ref(2500);
+                const pieChart = ref(null);
+                const lineChart = ref(null);
+
+                const categories = ref(['Moradia', 'Alimentação', 'Transporte', 'Lazer', 'Serviços']);
+                const transactions = ref([
+                    { id: 1, date: new Date(), description: 'Aluguel', category: 'Moradia', amount: 1200, type: 'expense' },
+                    { id: 2, date: new Date(), description: 'Salário', category: 'Renda', amount: 4000, type: 'income' },
+                ]);
+
+                const goals = ref([
+                    { id: 1, description: 'Fundo de Emergência', target: 10000, current: 3000 },
+                    { id: 2, description: 'Carro Novo', target: 25000, current: 5000 },
+                ]);
+
+                const newTransaction = ref({
+                    description: '',
+                    amount: null,
+                    category: '',
+                    type: 'expense'
+                });
+
+                const newGoal = ref({
+                    description: '',
+                    target: null,
+                    current: null
+                });
+
+                const initCharts = () => {
+                    const pieCtx = pieChart.value.getContext('2d');
+                    new Chart(pieCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Moradia', 'Alimentação', 'Transporte', 'Lazer', 'Serviços'],
+                            datasets: [{
+                                data: [30, 20, 15, 20, 15],
+                                backgroundColor: ['#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff'],
+                            }]
+                        }
+                    });
+
+                    const lineCtx = lineChart.value.getContext('2d');
+                    new Chart(lineCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                            datasets: [{
+                                label: 'Despesas',
+                                data: [2000, 2200, 1800, 2400, 2500, 2300],
+                                borderColor: '#a78bfa',
+                                tension: 0.1
+                            }]
+                        }
+                    });
+                };
+
+                const formatCurrency = (value) => {
+                    return new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(value);
+                };
+
+                const formatDate = (date) => {
+                    return new Date(date).toLocaleDateString('pt-BR');
+                };
+
+                const addTransaction = () => {
+                    transactions.value.push({
+                        id: transactions.value.length + 1,
+                        date: new Date(),
+                        ...newTransaction.value
+                    });
+                    newTransaction.value = {
+                        description: '',
+                        amount: null,
+                        category: '',
+                        type: 'expense'
+                    };
+                };
+
+                const addGoal = () => {
+                    goals.value.push({
+                        id: goals.value.length + 1,
+                        ...newGoal.value
+                    });
+                    newGoal.value = {
+                        description: '',
+                        target: null,
+                        current: null
+                    };
+                };
+
+                onMounted(() => {
+                    initCharts();
+                });
+
+                return {
+                    activeView,
+                    balance,
+                    monthlyIncome,
+                    monthlyExpenses,
+                    pieChart,
+                    lineChart,
+                    categories,
+                    transactions,
+                    goals,
+                    newTransaction,
+                    newGoal,
+                    formatCurrency,
+                    formatDate,
+                    addTransaction,
+                    addGoal
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
