@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Clash Royale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="game-container">
+  <div class="game-header">
+    <div class="title">⚔ MATH CLASH ⚔</div>
+    <div class="score-box" id="score-display">Pontuação: 0</div>
+    <div style="font-size:11px; opacity:0.6;" id="round-display">Rodada 1</div>
+  </div>
+
+  <div class="arena">
+    <div class="side enemy-side">
+      <div class="side-label" style="color:#ff6b6b">👺 INIMIGOS</div>
+      <div class="tower">
+        <div class="tower-icon">🏰</div>
+        <div class="tower-name">CASTELO SOMBRIO</div>
+        <div class="hp-bar enemy-hp"><div class="hp-fill" id="enemy-castle-hp" style="width:100%"></div></div>
+        <div class="hp-text" id="enemy-castle-text">500/500</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+        <div class="tower">
+          <div class="tower-icon">🗼</div>
+          <div class="tower-name">TORRE 1</div>
+          <div class="hp-bar enemy-hp"><div class="hp-fill" id="etow1-hp" style="width:100%"></div></div>
+          <div class="hp-text" id="etow1-text">200/200</div>
+        </div>
+        <div class="tower">
+          <div class="tower-icon">🗼</div>
+          <div class="tower-name">TORRE 2</div>
+          <div class="hp-bar enemy-hp"><div class="hp-fill" id="etow2-hp" style="width:100%"></div></div>
+          <div class="hp-text" id="etow2-text">200/200</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side player-side">
+      <div class="side-label" style="color:#6bff9e">🛡 SEU REINO</div>
+      <div class="tower">
+        <div class="tower-icon">🏯</div>
+        <div class="tower-name">SEU CASTELO</div>
+        <div class="hp-bar player-hp"><div class="hp-fill" id="player-castle-hp" style="width:100%"></div></div>
+        <div class="hp-text" id="player-castle-text">500/500</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+        <div class="tower">
+          <div class="tower-icon">🗼</div>
+          <div class="tower-name">TORRE 1</div>
+          <div class="hp-bar player-hp"><div class="hp-fill" id="ptow1-hp" style="width:100%"></div></div>
+          <div class="hp-text" id="ptow1-text">200/200</div>
+        </div>
+        <div class="tower">
+          <div class="tower-icon">🗼</div>
+          <div class="tower-name">TORRE 2</div>
+          <div class="hp-bar player-hp"><div class="hp-fill" id="ptow2-hp" style="width:100%"></div></div>
+          <div class="hp-text" id="ptow2-text">200/200</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="battle-log" id="battle-log">
+    <div class="log-entry info">⚔ Bem-vindo ao Math Clash! Responda corretamente para atacar!</div>
+  </div>
+
+  <div class="phase-badge phase-quiz" id="phase-badge">📚 FASE DO QUIZ — RESPONDA PARA AGIR</div>
+
+  <div class="quiz-panel" id="quiz-panel">
+    <div class="quiz-header">
+      <div class="quiz-type-badge" id="quiz-badge">BINÁRIO</div>
+      <div style="font-size:11px; opacity:0.7;" id="quiz-counter">Questão 1</div>
+    </div>
+    <div class="quiz-q" id="quiz-question">Carregando...</div>
+    <div class="quiz-options" id="quiz-options"></div>
+  </div>
+
+  <div class="mana-section">
+    <div class="mana-label">⚡ ELIXIR</div>
+    <div class="mana-bar"><div class="mana-fill" id="mana-fill" style="width:50%"></div></div>
+    <div class="mana-val" id="mana-val">5/10</div>
+  </div>
+
+  <div class="cards-section">
+    <div class="cards-label">ESCOLHA SEU GUERREIRO</div>
+    <div class="cards-row" id="cards-row">
+      <div class="char-card" id="card-0" onclick="selectChar(0)">
+        <div class="mana-cost">3</div>
+        <span class="char-emoji">🗡️</span>
+        <div class="char-name">ESPADACHIM</div>
+        <div class="char-atk">ATQ: 80 | DEF: 30</div>
+      </div>
+      <div class="char-card" id="card-1" onclick="selectChar(1)">
+        <div class="mana-cost">5</div>
+        <span class="char-emoji">🧙</span>
+        <div class="char-name">ARQUIMAGO</div>
+        <div class="char-atk">ATQ: 130 | DEF: 10</div>
+      </div>
+      <div class="char-card" id="card-2" onclick="selectChar(2)">
+        <div class="mana-cost">4</div>
+        <span class="char-emoji">🛡️</span>
+        <div class="char-name">PALADINO</div>
+        <div class="char-atk">ATQ: 50 | DEF: 90</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn btn-attack" id="btn-attack" onclick="doAction('attack')" disabled>⚔ ATACAR</button>
+    <button class="action-btn btn-defend" id="btn-defend" onclick="doAction('defend')" disabled>🛡 DEFENDER</button>
+    <button class="action-btn btn-special" id="btn-special" onclick="doAction('special')" disabled>✨ ESPECIAL</button>
+  </div>
+</div>
+
+<div class="game-over-screen" id="game-over">
+  <div class="game-over-box">
+    <div class="game-over-title" id="go-title">VITÓRIA!</div>
+    <div class="game-over-stats" id="go-stats"></div>
+    <button class="restart-btn" onclick="restartGame()">⚔ JOGAR NOVAMENTE</button>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
