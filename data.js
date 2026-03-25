@@ -15,7 +15,7 @@ const quizBank = [
   { type:'binary', q:'Qual é o resultado de 0101 + 0011 em binário?',           opts:['1000','0111','1001','1010'],                           answer:0 },
   { type:'binary', q:'Quantos bits são necessários para representar o número 15?', opts:['3','4','5','8'],                                    answer:1 },
   { type:'binary', q:'O que é 1111 em decimal?',                                opts:['14','15','16','13'],                                   answer:1 },
-  { type:'binary', q:'Qual operação binária: 1 AND 0 =?',                       opts:['1','0','2','Erro'],                                    answer:1 },
+  { type:'binary', q:'Qual operação binária: 1 AND 0 =?',                       opts:['1','0','2','Erro'],                                    answer:1 }, 
   { type:'binary', q:'Qual operação binária: 1 OR 0 =?',                        opts:['0','1','2','Erro'],                                    answer:1 },
   { type:'binary', q:'Converta 255 para binário:',                              opts:['11111111','11111110','11111100','11110000'],            answer:0 },
   { type:'binary', q:'O número binário 100 representa:',                        opts:['2','3','4','5'],                                       answer:2 },
