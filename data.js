@@ -9,7 +9,7 @@ const CHARS = [
 ];
 
 const quizBank = [
-  /* ── Binário ── */
+  /* ── Binário ── */ 
   { type:'binary', q:'Qual é o valor decimal de 1010 em binário?',              opts:['8','10','12','6'],                                     answer:1 },
   { type:'binary', q:'Converta 13 para binário:',                               opts:['1011','1100','1101','1110'],                           answer:2 },
   { type:'binary', q:'Qual é o resultado de 0101 + 0011 em binário?',           opts:['1000','0111','1001','1010'],                           answer:0 },
