@@ -43,13 +43,6 @@ math-clash-royale/
 └── README.md
 ```
 
-## 🚀 Como publicar no GitHub Pages
-
-1. Suba o repositório para o GitHub.
-2. Acesse **Settings → Pages**.
-3. Em **Source**, selecione a branch `main` e a pasta `/ (root)`.
-4. Clique em **Save** — em instantes o jogo estará online!
-
 ## 🛠 Tecnologias
 
 - HTML5 semântico
@@ -57,6 +50,3 @@ math-clash-royale/
 - JavaScript vanilla (sem dependências externas)
 - Google Fonts: [Cinzel](https://fonts.google.com/specimen/Cinzel) + [Rajdhani](https://fonts.google.com/specimen/Rajdhani)
 
-## 📄 Licença
-
-MIT — use, modifique e distribua à vontade.
