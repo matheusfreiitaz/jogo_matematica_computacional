@@ -7,7 +7,7 @@ Jogo educativo estilo tower defense onde você responde questões de matemática
 1. **Fase do Quiz** — Responda a questão de matemática corretamente.
    - ✅ Acertou → ganhe o turno de ação e +10 de pontuação.
    - ❌ Errou → o inimigo ataca automaticamente.
-
+ 
 2. **Fase de Ação** — Escolha um guerreiro e execute uma ação:
    - ⚔ **Atacar** — causa dano progressivo nas torres e no castelo inimigo.
    - 🛡 **Defender** — reduz o dano do próximo ataque inimigo.
