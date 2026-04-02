@@ -5,7 +5,7 @@
 /* ── Estado global ── */
 
 let state = {};
-let usedQuestions = [];
+let usedQuestions = []; 
 let currentQuiz   = null; 
 let quizAnswered  = false;
  
