@@ -9,7 +9,7 @@ let usedQuestions = [];
 let currentQuiz   = null;
 let quizAnswered  = false;
 
-/* ── Inicialização ── */
+/* ── Inicialização ── */ 
 
 function initState() {
   state = {
