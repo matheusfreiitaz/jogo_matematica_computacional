@@ -8,7 +8,7 @@ let state = {};
 let usedQuestions = [];
 let currentQuiz   = null;
 let quizAnswered  = false;
-
+ 
 /* ── Inicialização ── */ 
 
 function initState() {
