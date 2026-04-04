@@ -4,7 +4,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
+:root { 
   --gold: #FFD700;
   --red: #e74c3c;
   --blue: #2980b9; 
