@@ -7,7 +7,7 @@
 let state = {};
 let usedQuestions = [];  
 let currentQuiz   = null; 
-let quizAnswered  = false;
+let quizAnswered  = false; 
  
 /* ── Inicialização ── */ 
 
