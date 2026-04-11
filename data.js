@@ -7,7 +7,7 @@ const CHARS = [
   { name: 'Arquimago',  emoji: '🧙', atk: 130, def: 10, cost: 5, special: 'Bola de Fogo'   },
   { name: 'Paladino',   emoji: '🛡️', atk: 50,  def: 90, cost: 4, special: 'Escudo Sagrado' },
 ];
- 
+  
 const quizBank = [
   /* ── Binário ── */ 
   { type:'binary', q:'Qual é o valor decimal de 1010 em binário?',              opts:['8','10','12','6'],                                     answer:1 },
