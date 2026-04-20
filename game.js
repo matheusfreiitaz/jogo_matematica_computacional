@@ -2,7 +2,7 @@
    game.js — Lógica principal do Math Clash Royale
    ============================================================ */
 
-/* ── Estado global ── */ 
+/* ── Estado global ── */  
 
 let state = {}; 
 let usedQuestions = [];   
