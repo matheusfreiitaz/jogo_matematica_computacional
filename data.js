@@ -2,7 +2,7 @@
    data.js — Personagens e banco de questões
    ============================================================ */   
     
-const CHARS = [   
+const CHARS = [    
   { name: 'Espadachim', emoji: '🗡️', atk: 80,  def: 30, cost: 3, special: 'Golpe Duplo'    }, 
   { name: 'Arquimago',  emoji: '🧙', atk: 130, def: 10, cost: 5, special: 'Bola de Fogo'   }, 
   { name: 'Paladino',   emoji: '🛡️', atk: 50,  def: 90, cost: 4, special: 'Escudo Sagrado' }, 
